@@ -1,10 +1,12 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Html } from '@react-three/drei'
 import * as THREE from 'three'
+import { useFrame } from '@react-three/fiber'
 
 const CountryMarker = ({ position, name, population, history, flag }) => {
   const [hovered, setHovered] = useState(false)
   const [clicked, setClicked] = useState(false)
+  const groupRef = useRef()
   const flagRef = useRef()
 
   const loader = new THREE.TextureLoader()
@@ -13,8 +15,24 @@ const CountryMarker = ({ position, name, population, history, flag }) => {
   // Calculate the position slightly above the globe surface
   const surfacePosition = new THREE.Vector3(...position).normalize().multiplyScalar(1.02)
 
+  useEffect(() => {
+    if (groupRef.current) {
+      groupRef.current.position.copy(surfacePosition)
+    }
+  }, [surfacePosition])
+
+  useFrame(({ clock }) => {
+    if (groupRef.current) {
+      const rotationAngle = clock.getElapsedTime() * 0.1
+      groupRef.current.position.applyAxisAngle(new THREE.Vector3(0, 1, 0), rotationAngle)
+      groupRef.current.quaternion.setFromRotationMatrix(
+        new THREE.Matrix4().lookAt(groupRef.current.position, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 1, 0))
+      )
+    }
+  })
+
   return (
-    <group position={surfacePosition}>
+    <group ref={groupRef}>
       <mesh
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)}

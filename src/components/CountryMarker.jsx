@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Html } from '@react-three/drei'
 import * as THREE from 'three'
-import { useFrame } from '@react-three/fiber'
 
 const CountryMarker = ({ position, name, population, history, flag }) => {
   const [hovered, setHovered] = useState(false)
@@ -18,19 +17,9 @@ const CountryMarker = ({ position, name, population, history, flag }) => {
   useEffect(() => {
     if (groupRef.current) {
       groupRef.current.position.copy(surfacePosition)
+      groupRef.current.lookAt(new THREE.Vector3(0, 0, 0))
     }
   }, [surfacePosition])
-
-  useFrame(({ clock }) => {
-    if (groupRef.current) {
-      // Slow down the rotation speed
-      const rotationAngle = clock.getElapsedTime() * 0.001 // Reduced from 0.1 to 0.001
-      groupRef.current.position.applyAxisAngle(new THREE.Vector3(0, 1, 0), rotationAngle)
-      groupRef.current.quaternion.setFromRotationMatrix(
-        new THREE.Matrix4().lookAt(groupRef.current.position, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 1, 0))
-      )
-    }
-  })
 
   return (
     <group ref={groupRef}>

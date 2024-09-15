@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { useFrame, useLoader } from '@react-three/fiber'
+import { useLoader } from '@react-three/fiber'
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
 import * as THREE from 'three'
 
@@ -7,12 +7,6 @@ const Globe = () => {
   const earthMap = useLoader(TextureLoader, 'https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
   const bumpMap = useLoader(TextureLoader, 'https://unpkg.com/three-globe/example/img/earth-topology.png')
   const globeRef = useRef()
-
-  useFrame(() => {
-    if (globeRef.current) {
-      globeRef.current.rotation.y += 0.001
-    }
-  })
 
   return (
     <mesh ref={globeRef}>

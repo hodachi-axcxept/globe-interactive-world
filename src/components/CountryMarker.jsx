@@ -10,8 +10,11 @@ const CountryMarker = ({ position, name, population, history, flag }) => {
   const loader = new THREE.TextureLoader()
   const flagTexture = loader.load(flag)
 
+  // Calculate the position slightly above the globe surface
+  const surfacePosition = new THREE.Vector3(...position).normalize().multiplyScalar(1.02)
+
   return (
-    <group position={position}>
+    <group position={surfacePosition}>
       <mesh
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)}
@@ -19,7 +22,7 @@ const CountryMarker = ({ position, name, population, history, flag }) => {
         ref={flagRef}
       >
         <planeGeometry args={[0.1, 0.06]} />
-        <meshBasicMaterial map={flagTexture} side={THREE.DoubleSide} />
+        <meshBasicMaterial map={flagTexture} side={THREE.DoubleSide} transparent={true} />
       </mesh>
       {hovered && (
         <Html>

@@ -4,29 +4,38 @@ import * as THREE from 'three'
 
 const Weather = () => {
   const { scene } = useThree()
-  const [season, setSeason] = useState('summer')
+  const [season, setSeason] = useState(getCurrentSeason())
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setSeason(prev => (prev === 'summer' ? 'winter' : 'summer'))
-    }, 10000)
+      setSeason(getCurrentSeason())
+    }, 60000) // Update every minute
     return () => clearInterval(interval)
   }, [])
 
   useFrame(() => {
     if (season === 'winter') {
       createSnowflake(scene)
-    } else {
+    } else if (season === 'spring' || season === 'autumn') {
       createRaindrop(scene)
     }
     
-    // Occasionally create lightning
-    if (Math.random() < 0.001) {
+    // Occasionally create lightning in summer
+    if (season === 'summer' && Math.random() < 0.001) {
       createLightning(scene)
     }
   })
 
   return null
+}
+
+const getCurrentSeason = () => {
+  const now = new Date()
+  const month = now.getMonth()
+  if (month >= 2 && month <= 4) return 'spring'
+  if (month >= 5 && month <= 7) return 'summer'
+  if (month >= 8 && month <= 10) return 'autumn'
+  return 'winter'
 }
 
 const createSnowflake = (scene) => {

@@ -1,6 +1,7 @@
 import React, { useRef } from 'react'
 import { useFrame, useLoader } from '@react-three/fiber'
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
+import * as THREE from 'three'
 
 const Globe = () => {
   const earthMap = useLoader(TextureLoader, 'https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg')

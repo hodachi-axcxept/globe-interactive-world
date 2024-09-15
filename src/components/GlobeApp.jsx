@@ -15,7 +15,7 @@ const GlobeApp = () => {
           <Globe />
           <CountryMarkers />
           <Weather />
-          <OrbitControls enableZoom={false} />
+          <OrbitControls enableZoom={true} enablePan={false} minDistance={1.5} maxDistance={10} />
         </Canvas>
       </Suspense>
     </div>

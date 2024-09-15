@@ -3,7 +3,7 @@ import { useFrame, useLoader } from '@react-three/fiber'
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
 
 const Globe = () => {
-  const earthMap = useLoader(TextureLoader, '/placeholder.svg')
+  const earthMap = useLoader(TextureLoader, 'https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
   const globeRef = useRef()
 
   useFrame(() => {

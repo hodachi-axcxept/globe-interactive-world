@@ -3,11 +3,13 @@ import { useFrame, useLoader } from '@react-three/fiber'
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
 
 const Globe = () => {
-  const earthMap = useLoader(TextureLoader, '/placeholder.svg?height=1024&width=2048')
+  const earthMap = useLoader(TextureLoader, '/placeholder.svg')
   const globeRef = useRef()
 
   useFrame(() => {
-    globeRef.current.rotation.y += 0.001
+    if (globeRef.current) {
+      globeRef.current.rotation.y += 0.001
+    }
   })
 
   return (
